@@ -12,6 +12,7 @@ L.Marker.Cluster = L.Class.extend({
         this._layers = new L.FeatureGroup;
         
         this.addPoint(initialLatLng);
+        this._layers.on("click", this.fitViewportToCluster, this);
 	},
     
     /**
@@ -32,7 +33,6 @@ L.Marker.Cluster = L.Class.extend({
      * zoom the map to this cluster's bounds
      */
     fitViewportToCluster: function () {
-        // console.log("zooming to cluster: ", this._id);
         var map = this._map,
             clusterBounds = this.getBounds();
         
@@ -64,8 +64,15 @@ L.Marker.Cluster = L.Class.extend({
     },
     
     /**
+     * @return {L.FeatureGroup}
+     */
+    getLayers: function () {
+        return this._layers;
+    },
+    
+    /**
      * returns an HTML node who's text value is the number of coodinates at this cluster
-     * @return L.MarkerLabel
+     * @return {L.MarkerLabel}
      */
     getLabel: function () {
         var markerText = this._coords.length.toString(),
@@ -78,20 +85,16 @@ L.Marker.Cluster = L.Class.extend({
                 },
                 'zIndexOffset': 10 //FIXME: this should not be hardcoded
             },
-            point = this._map.latLngToLayerPoint(this.getCenter());
+            point = this._map.latLngToLayerPoint(this.getCenter()),
+            elem;
 
-        this._markerLabel = new L.Marker.Label(point, options);
-        this._markerLabel.on('click', this.fitViewportToCluster, this);
-        
-        return this._markerLabel;
-    },
-    
-    getLayers: function () {
-        return this._layers;
+        return this._markerLabel = new L.Marker.Label(point, options);
+
     },
     
     /**
-     * @return L.MarkerClusterer.Marker (currently L.CircleMarker - plans to augment with diff types)
+     * @return {L.CircleMarker}
+     * TODO: augment to allow different types
      */
     getMarker: function () {
         var numDigits = this._coords.length.toString().length,
@@ -100,10 +103,7 @@ L.Marker.Cluster = L.Class.extend({
         this._radius = Math.max(numDigits * 5, 10);
         options = L.Util.extend(options, { 'radius': this._radius });
         
-        this._marker = new L.CircleMarker(this.getCenter(), options);
-        this._marker.on('click', this.fitViewportToCluster, this);
-        
-        return this._marker;
+        return this._marker = new L.CircleMarker(this.getCenter(), options);
     },
     
     /**
@@ -121,6 +121,8 @@ L.Marker.Cluster = L.Class.extend({
      */
     remove: function () {
         if (this._marker) {
+            this._layers.off("click", this.fitViewportToCluster, this);
+            
             this._layers.removeLayer(this._marker);
             this._layers.removeLayer(this._markerLabel);
         }

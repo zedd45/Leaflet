@@ -23,7 +23,6 @@ L.Marker.Label = L.Class.extend({
 
 	onAdd: function (map) {
 		this._map = map;
-		this._zoom = this._map._zoom;
 		this._initLabel();
 	},
 
