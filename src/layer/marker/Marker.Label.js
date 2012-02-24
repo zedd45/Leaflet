@@ -53,11 +53,7 @@ L.Marker.Label = L.Class.extend({
 	_initLabel: function () {
         var options =  this.options,
             newLabel;
-        
-        if (this._label !== null) { 
-            this._removeLabel();
-        }
-        
+    
         newLabel = L.DomUtil.create("div", options.labelClass, this._map.overlayPane);
 		newLabel.innerHTML = options.labelMarkup;
 		

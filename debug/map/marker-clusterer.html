@@ -30,7 +30,7 @@
 
 		map.addLayer(clusterer);
         
-        clusterer.addMarkers(addRandomLatLngs(10));
+        clusterer.addMarkers(addRandomLatLngs(500));
         
         L.DomUtil.get('addPoints').onclick = injectPoints;
         L.DomUtil.get('clearPoints').onclick = removePoints;
