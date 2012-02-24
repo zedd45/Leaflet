@@ -176,8 +176,8 @@ L.Marker.Clusterer = L.Class.extend({
         var currentCluster;
         
         for (var cluster in this._dirtyClusters) {
-            currentCluster = this._dirtyClusters[cluster];
             if (this._dirtyClusters.hasOwnProperty(cluster)) {
+                currentCluster = this._dirtyClusters[cluster];
                 currentCluster.redrawCluster();
                 this._featureGroup.addLayer(currentCluster.getLayers());
             }

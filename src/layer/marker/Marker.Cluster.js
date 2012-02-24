@@ -9,7 +9,7 @@ L.Marker.Cluster = L.Class.extend({
         this._marker = null;
         this._zoom = clusterer._map.getZoom();
         this._radius = 0;
-        this._layers = new L.FeatureGroup;
+        this._layers = new L.FeatureGroup();
         
         this.addPoint(initialLatLng);
         this._layers.on("click", this.fitViewportToCluster, this);
@@ -110,10 +110,10 @@ L.Marker.Cluster = L.Class.extend({
      * put a cluster on the map.
      */
     redrawCluster: function () {
-       this.remove();
-       //TODO: procedural; marker does some calculations necessary for label.  Improve?
-       this._layers.addLayer(this.getMarker());
-       this._layers.addLayer(this.getLabel());
+        this.remove();
+        //TODO: procedural; marker does some calculations necessary for label.  Improve?
+        this._layers.addLayer(this.getMarker());
+        this._layers.addLayer(this.getLabel());
     },
     
     /**
